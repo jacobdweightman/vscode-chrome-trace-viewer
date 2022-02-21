@@ -2,7 +2,7 @@
   "name": "chrome-trace-viewer",
   "displayName": "Chrome Trace Viewer",
   "description": "View Chrome-compatible profiles and traces in VS Code!",
-  "version": "0.0.1",
+  "version": "1.0.0",
   "engines": {
     "vscode": "^1.64.0"
   },
