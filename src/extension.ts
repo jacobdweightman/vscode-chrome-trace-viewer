@@ -19,19 +19,24 @@ function openInBrowser(traceUri: vscode.Uri) {
 		"cors": true
 	});
 	server.listen(port);
-	
-	open(`https://ui.perfetto.dev/#!/?url=http://127.0.0.1:${port}/index.json`);
 
-	setTimeout(() => {
-		console.log(`cleaning up ${tmpdir}!`);
-		server.close();
-		fs.rmSync(
-			tmpdir,
-			{
-				"recursive": true,
-				"force": true
-			});
-	}, 2000);
+	const url = `http://127.0.0.1:${port}/index.json`;
+	open(`https://ui.perfetto.dev/#!/?url=${url}`).then(() => {
+		// We would like to shut down the HTTP server once perfetto completes
+		// the request for index.json. However, the library doesn't expose any
+		// hooks to accomplish this. For now, just wait a second after opening
+		// perfetto, as this should be plenty of time for a local HTTP request.
+		setTimeout(() => {
+			console.log(`cleaning up ${tmpdir}!`);
+			server.close();
+			fs.rmSync(
+				tmpdir,
+				{
+					"recursive": true,
+					"force": true
+				});
+		}, 1000);
+	});
 }
 
 // this method is called when your extension is activated
